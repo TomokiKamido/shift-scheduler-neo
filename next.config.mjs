@@ -10,11 +10,6 @@ const nextConfig = {
     unoptimized: true,
     domains: ['api.dicebear.com'], // アバター画像用
   },
-  // Render用の最適化
-  output: 'standalone',
-  experimental: {
-    outputFileTracingRoot: undefined,
-  },
   // セキュリティヘッダー
   async headers() {
     return [
