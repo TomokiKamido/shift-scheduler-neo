@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: shift-scheduler
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: chmod +x build.sh && ./build.sh
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NPM_CONFIG_PRODUCTION
+        value: false
+    autoDeploy: true
+    branch: main
