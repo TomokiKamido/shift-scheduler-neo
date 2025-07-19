@@ -1,9 +1,6 @@
 -- Supabase Database Setup Script for Shift Management System
 -- Run these commands in your Supabase SQL Editor
 
--- Enable Row Level Security
-ALTER TABLE auth.users ENABLE ROW LEVEL SECURITY;
-
 -- Create profiles table
 CREATE TABLE public.profiles (
   id UUID REFERENCES auth.users ON DELETE CASCADE PRIMARY KEY,
@@ -154,22 +151,25 @@ CREATE POLICY "Managers can update department requests" ON public.requests
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO public.profiles (id, email, name, employee_id, department)
+  INSERT INTO public.profiles (id, email, name, employee_id, department, role)
   VALUES (
     NEW.id,
     NEW.email,
     COALESCE(NEW.raw_user_meta_data->>'name', 'New User'),
     COALESCE(NEW.raw_user_meta_data->>'employee_id', 'EMP000'),
-    COALESCE(NEW.raw_user_meta_data->>'department', '未設定')
+    COALESCE(NEW.raw_user_meta_data->>'department', '未設定'),
+    COALESCE(NEW.raw_user_meta_data->>'role', 'staff')
   );
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- Create trigger for new user profile creation
+-- Note: This trigger may need to be created with admin privileges
+-- If you get permission errors, you can create profiles manually through the signup process
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
-  FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
 -- Insert sample departments
 INSERT INTO public.departments (name, work_system, member_count) VALUES
@@ -190,16 +190,16 @@ $$ LANGUAGE plpgsql;
 
 -- Add updated_at triggers to all tables
 CREATE TRIGGER update_profiles_updated_at BEFORE UPDATE ON public.profiles
-  FOR EACH ROW EXECUTE PROCEDURE public.update_updated_at_column();
+  FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
 
 CREATE TRIGGER update_departments_updated_at BEFORE UPDATE ON public.departments
-  FOR EACH ROW EXECUTE PROCEDURE public.update_updated_at_column();
+  FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
 
 CREATE TRIGGER update_shifts_updated_at BEFORE UPDATE ON public.shifts
-  FOR EACH ROW EXECUTE PROCEDURE public.update_updated_at_column();
+  FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
 
 CREATE TRIGGER update_requests_updated_at BEFORE UPDATE ON public.requests
-  FOR EACH ROW EXECUTE PROCEDURE public.update_updated_at_column();
+  FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
 
 -- Create indexes for better performance
 CREATE INDEX idx_shifts_staff_id ON public.shifts(staff_id);
