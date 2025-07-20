@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
-import { getCurrentUserServer, getUserProfile } from '@/lib/auth'
-import { createServerSupabaseClient } from '@/lib/supabase'
+import { getCurrentUserServer, getUserProfile } from '../../lib/auth'
+import { createServerSupabaseClient } from '../../lib/supabase'
 import DashboardClient from './dashboard-client'
 
 export default async function DashboardPage() {
