@@ -1,12 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
+import { Button } from "./ui/button"
+import { Tabs, TabsList, TabsTrigger } from "./ui/tabs"
+import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group"
 import { Users, User, RotateCcw, Check, Settings } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { cn } from "../lib/utils"
 
 // Re-use types from app/page.tsx or define them here if they are specific
 type UserRole = "admin" | "manager" | "staff"
