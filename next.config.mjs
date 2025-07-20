@@ -8,30 +8,9 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
-    domains: ['api.dicebear.com'], // アバター画像用
+    domains: ['api.dicebear.com'],
   },
-  // セキュリティヘッダー
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
-        ],
-      },
-    ]
-  },
+  output: 'standalone',
 }
 
 export default nextConfig
