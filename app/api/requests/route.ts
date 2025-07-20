@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerSupabaseClient } from '@/lib/supabase'
-import { getCurrentUserServer, getUserProfile } from '@/lib/auth'
+import { createServerSupabaseClient } from '../../../lib/supabase'
+import { getCurrentUserServer, getUserProfile } from '../../../lib/auth'
 
 export async function GET(request: NextRequest) {
   try {
